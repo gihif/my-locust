@@ -1,0 +1,15 @@
+variables:
+  #base identity variables
+  PROJECT_NAME: "migsappsample"
+  #versioning variable
+  MAJOR_VER: "0"
+  MINOR_VER: "0"
+  VERSION_TAG: "${MAJOR_VER}.${MINOR_VER}"
+
+stages:
+  - build
+  - test
+
+include:
+  - local: '/.gitlab-ci-build.yml'
+  - local: '/.gitlab-ci-test.yml'
