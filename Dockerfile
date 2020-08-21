@@ -11,4 +11,4 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
 USER locust
 ARG PROJECT_NAME
 
-COPY ./locustfile/${PROJECT_NAME}/* /mnt/locust/
+COPY ./locustfiles/${PROJECT_NAME}/* /mnt/locust/
