@@ -2,12 +2,13 @@
 FROM locustio/locust
 
 # INSTALL REQUIRED APPS
-RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz \
-  && mkdir -p /usr/local/gcloud \
-  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
+USER root
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
+  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - \
+  && apt-get update -y && apt-get install google-cloud-sdk -y
 
 # PART OF CUSTOM SCRIPTS
+USER locust
 ARG PROJECT_NAME
 
 COPY ./locustfile/${PROJECT_NAME}/* /mnt/locust/
