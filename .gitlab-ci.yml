@@ -1,7 +1,7 @@
 variables:
   #base identity variables
-  PROJECT_NAME: "migsappsample"
-  PROJECT_ID: "19235528"
+  PROJECT_NAME: "bpm"
+  PROJECT_ID: "815"
   #versioning variable
   MAJOR_VER: "0"
   MINOR_VER: "0"
