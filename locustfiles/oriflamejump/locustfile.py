@@ -6,4 +6,5 @@ class QuickstartUser(HttpUser):
 
     @task
     def images_page(self):
-        self.client.get("/Game/ListFile")
+        self.client.get("/Health/Database")
+        #self.client.get("/Game/ListFile")
