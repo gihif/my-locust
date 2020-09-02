@@ -1,7 +1,7 @@
 variables:
   #base identity variables
-  PROJECT_NAME: "migsappsample"
-  PROJECT_ID: "19235528"
+  PROJECT_NAME: "oriflamejump"
+  PROJECT_ID: "1289"
   #versioning variable
   MAJOR_VER: "0"
   MINOR_VER: "0"
@@ -9,7 +9,7 @@ variables:
 
 stages:
   - build
-  - template
+  - pre-deploy
   - deploy
 
 include:
