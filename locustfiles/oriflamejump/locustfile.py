@@ -1,5 +1,4 @@
 from locust import HttpLocust, TaskSet, task
-from slumber import API 
 import json, requests
 
 nameInquiry = [{
