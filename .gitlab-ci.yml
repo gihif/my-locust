@@ -1,0 +1,24 @@
+variables:
+  #base identity variables
+  PROJECT_NAME: "migsappsample-get"
+  PROJECT_ID: "19235528"
+  #locust variable
+  LOCUST_MASTER_IP: "10.184.1.1"
+  #gcp variable
+  GCP_REGION_NAME: "asia-southeast2"
+  #versioning variable
+  MAJOR_VER: "0"
+  MINOR_VER: "0"
+  VERSION_TAG: "${MAJOR_VER}.${MINOR_VER}"
+
+stages:
+  - build
+  - predeploy
+  - deploy
+  - undeploy
+
+include:
+  - local: '/.gitlab-ci-build.yml'
+  - local: '/.gitlab-ci-predeploy.yml'
+  - local: '/.gitlab-ci-deploy.yml'
+  - local: '/.gitlab-ci-undeploy.yml'

@@ -1,0 +1,84 @@
+.undeploy-template:
+  stage: undeploy
+  variables:
+    GCP_WORKER_SIZE: "1"
+  tags:
+    - docker
+  image: google/cloud-sdk:alpine
+  before_script:
+    #login to gcp project
+    - echo "${GCP_SERVICE_ACCOUNT}" | tr -d '\r' > keyfile.json
+    - gcloud auth activate-service-account --key-file=keyfile.json
+    - gcloud config set project ${GCP_PROJECT_ID}
+  script:
+    #delete master instance
+    - echo "Deleting Master Instance"
+    - |
+      gcloud compute instances \
+      delete ${GCP_INSTANCE_MASTER} \
+      --zone=${GCP_REGION_NAME}-a \
+      --quiet
+    #delete worker instance
+    - echo "Deleting Worker Instance Group"
+    - |
+      gcloud compute instance-groups managed \
+      delete ${GCP_INSTANCE_WORKER} \
+      --region=${GCP_REGION_NAME} \
+      --quiet
+    - echo "Done Undeploy locust for project ${PROJECT_NAME}"
+  after_script:
+    - rm keyfile.json
+
+.undeploy-locust-develop:
+  extends: .undeploy-template
+  environment:
+    name: development
+  when: manual
+  needs: ["deploy-locust-develop"]
+  variables:
+    GCP_INSTANCE_MASTER: "locust-dev-master-id${PROJECT_ID}"
+    GCP_INSTANCE_WORKER: "locust-dev-worker-group-id${PROJECT_ID}"
+  only:
+    refs:
+      - develop
+
+.undeploy-locust-develop-auto:
+  extends: .undeploy-template
+  environment:
+    name: development
+  when: delayed
+  start_in: 30 minutes
+  needs: ["deploy-locust-develop"]
+  variables:
+    GCP_INSTANCE_MASTER: "locust-dev-master-id${PROJECT_ID}"
+    GCP_INSTANCE_WORKER: "locust-dev-worker-group-id${PROJECT_ID}"
+  only:
+    refs:
+      - develop
+
+undeploy-locust-release:
+  extends: .undeploy-template
+  environment:
+    name: release
+  when: manual
+  needs: ["deploy-locust-release"]
+  variables:
+    GCP_INSTANCE_MASTER: "locust-prod-master-id${PROJECT_ID}"
+    GCP_INSTANCE_WORKER: "locust-prod-worker-group-id${PROJECT_ID}"
+  only:
+    refs:
+      - master
+
+undeploy-locust-release-auto:
+  extends: .undeploy-template
+  environment:
+    name: release
+  when: delayed
+  start_in: 30 minutes
+  needs: ["deploy-locust-release"]
+  variables:
+    GCP_INSTANCE_MASTER: "locust-prod-master-id${PROJECT_ID}"
+    GCP_INSTANCE_WORKER: "locust-prod-worker-group-id${PROJECT_ID}"
+  only:
+    refs:
+      - master

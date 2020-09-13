@@ -1,0 +1,58 @@
+.build-template:
+  stage: build
+  tags:
+    - docker
+  image: docker:git
+  services:
+    - docker:dind
+    - google/cloud-sdk
+  before_script:
+    #set env variable
+    - IMAGE_NAME="locust"
+    - GCR_PATH="gcr.io/${GCP_PROJECT_ID}/${PROJECT_NAME}"
+  script:
+    #prepare auth json with google token
+    - echo "$GCP_SERVICE_ACCOUNT" | tr -d '\r' > keyfile.json
+    #build docker image
+    - echo "Building docker with image name [${GCP_PROJECT_ID}/${PROJECT_NAME}/${IMAGE_NAME}:${CI_PIPELINE_IID}.${CI_JOB_ID}] from project ${PROJECT_NAME}"
+    - |
+      docker build \
+      --build-arg PROJECT_NAME=${PROJECT_NAME} \
+      -f ./Dockerfile \
+      -t ${GCP_PROJECT_ID}/${PROJECT_NAME}/${IMAGE_NAME}:${CI_PIPELINE_IID}.${CI_JOB_ID} .
+    #docker login before push
+    - docker login -u _json_key --password-stdin https://gcr.io < keyfile.json
+    #tagging X.X
+    - echo "Tagging image ${GCR_PATH}/${IMAGE_NAME}:${VERSION_TAG}"
+    - docker tag ${GCP_PROJECT_ID}/${PROJECT_NAME}/${IMAGE_NAME}:${CI_PIPELINE_IID}.${CI_JOB_ID} ${GCR_PATH}/${IMAGE_NAME}:${VERSION_TAG}
+    - docker push ${GCR_PATH}/${IMAGE_NAME}:${VERSION_TAG}
+    #docker login before push
+    - docker login -u _json_key --password-stdin https://gcr.io < keyfile.json
+    #tagging X.X.XXX for
+    - echo "Tagging image ${GCR_PATH}/${IMAGE_NAME}:${VERSION_TAG}.${CI_PIPELINE_IID}"
+    - docker tag ${GCP_PROJECT_ID}/${PROJECT_NAME}/${IMAGE_NAME}:${CI_PIPELINE_IID}.${CI_JOB_ID} ${GCR_PATH}/${IMAGE_NAME}:${VERSION_TAG}.${CI_PIPELINE_IID}
+    - docker push ${GCR_PATH}/${IMAGE_NAME}:${VERSION_TAG}.${CI_PIPELINE_IID}
+    #docker login before push
+    - docker login -u _json_key --password-stdin https://gcr.io < keyfile.json
+    #tagging latest
+    - echo "Tagging image ${GCR_PATH}/${IMAGE_NAME}:latest"
+    - docker tag ${GCP_PROJECT_ID}/${PROJECT_NAME}/${IMAGE_NAME}:${CI_PIPELINE_IID}.${CI_JOB_ID} ${GCR_PATH}/${IMAGE_NAME}:latest
+    - docker push ${GCR_PATH}/${IMAGE_NAME}:latest
+  after_script:
+    - rm keyfile.json
+
+.build-locust-develop:
+  extends: .build-template
+  environment:
+    name: development
+  only:
+    refs:
+      - develop
+
+build-locust-release:
+  extends: .build-template
+  environment:
+    name: release
+  only:
+    refs:
+      - master
