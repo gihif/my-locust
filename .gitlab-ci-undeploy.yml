@@ -34,6 +34,7 @@ undeploy-locust-develop:
   environment:
     name: development
   when: manual
+  needs: ["deploy-locust-develop"]
   variables:
     GCP_INSTANCE_MASTER: "locust-dev-master-id${PROJECT_ID}"
     GCP_INSTANCE_WORKER: "locust-dev-worker-group-id${PROJECT_ID}"
@@ -47,6 +48,7 @@ undeploy-locust-develop-auto:
     name: development
   when: delayed
   start_in: 60 minutes
+  needs: ["deploy-locust-develop"]
   variables:
     GCP_INSTANCE_MASTER: "locust-dev-master-id${PROJECT_ID}"
     GCP_INSTANCE_WORKER: "locust-dev-worker-group-id${PROJECT_ID}"
@@ -59,6 +61,7 @@ undeploy-locust-release:
   environment:
     name: release
   when: manual
+  needs: ["deploy-locust-release"]
   variables:
     GCP_INSTANCE_MASTER: "locust-prod-master-id${PROJECT_ID}"
     GCP_INSTANCE_WORKER: "locust-prod-worker-group-id${PROJECT_ID}"
@@ -72,6 +75,7 @@ undeploy-locust-release-auto:
     name: release
   when: delayed
   start_in: 60 minutes
+  needs: ["deploy-locust-release"]
   variables:
     GCP_INSTANCE_MASTER: "locust-prod-master-id${PROJECT_ID}"
     GCP_INSTANCE_WORKER: "locust-prod-worker-group-id${PROJECT_ID}"
