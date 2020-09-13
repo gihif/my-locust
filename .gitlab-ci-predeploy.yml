@@ -12,11 +12,11 @@
     - IMAGE_NAME="locust"
     - BUILD_ENV_LOWERED="$(echo ${BUILD_ENV} | tr '[:upper:]' '[:lower:]')"
     - GCR_PATH="gcr.io/${GCP_PROJECT_ID}/${PROJECT_NAME}"
-  script:
     #login to gcp project
     - echo "${GCP_SERVICE_ACCOUNT}" | tr -d '\r' > keyfile.json
     - gcloud auth activate-service-account --key-file=keyfile.json
     - gcloud config set project ${GCP_PROJECT_ID}
+  script:
     #create instance template
     - |
       gcloud compute instance-templates \

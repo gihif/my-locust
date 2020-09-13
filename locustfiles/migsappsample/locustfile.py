@@ -14,7 +14,7 @@ class QuickstartUser(HttpUser):
         newHeaders = {'Content-Type': 'application/x-www-form-urlencoded'}
         payload = {"image[title]":"Api Upload", "image[user_id]":"2"}
         files = [
-            ("image[picture]", open("./devops.png","rb"))
+            ("image[picture]", open("/mnt/locust/devops.png","rb"))
         ]
         
         response = self.client.post("/images.json", headers = newHeaders, data = payload, files = files)
