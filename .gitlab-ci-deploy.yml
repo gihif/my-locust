@@ -23,6 +23,7 @@
       --source-instance-template=${GCP_TEMPLATE_MASTER}-${MAJOR_VER}-${MINOR_VER}-${CI_PIPELINE_IID} \
       --zone=${GCP_REGION_NAME}-a \
       --private-network-ip=${LOCUST_MASTER_IP}
+    - echo "Locust Access URL http://$(gcloud compute instances list --zones=${GCP_REGION_NAME}-a --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"):8089 for project ${PROJECT_NAME}" > URL-Access.txt
     - sleep 20s
     #create worker instance & auto scaling
     - echo "Creating Locust Worker Instance.."
@@ -40,9 +41,7 @@
       --scale-based-on-cpu \
       --target-cpu-utilization=${GCP_WORKER_CPU_UTIL} \
       --region=${GCP_REGION_NAME}
-    - gcloud compute instances list --zones=${GCP_REGION_NAME}-a --filter=name=${GCP_INSTANCE_WORKER} --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"
-    - echo "Locust Access URL http://$(gcloud compute instances list --zones=${GCP_REGION_NAME}-a --filter=name=${GCP_INSTANCE_WORKER} --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"):8089 for project ${PROJECT_NAME}" > URL-Access.txt
-    - echo "Locust Access URL http://$(gcloud compute instances list --zones=${GCP_REGION_NAME}-a --filter=name=${GCP_INSTANCE_WORKER} --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"):8089 for project ${PROJECT_NAME}"
+    - cat URL-Access.txt
   after_script:
     - rm keyfile.json
   artifacts:
