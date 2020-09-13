@@ -40,13 +40,9 @@
       --scale-based-on-cpu \
       --target-cpu-utilization=${GCP_WORKER_CPU_UTIL} \
       --region=${GCP_REGION_NAME}
-    - |
-      LOCUST_EXTERNAL_IP=$(gcloud compute instances \
-      list --zones=${GCP_REGION_NAME}-a \
-      --filter=name=${GCP_INSTANCE_WORKER} \
-      --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP")
-    - echo "Locust Access URL http://${LOCUST_EXTERNAL_IP}:8089 for project ${PROJECT_NAME}" > URL-Access.txt
-    - echo "Locust Access URL http://${LOCUST_EXTERNAL_IP}:8089 for project ${PROJECT_NAME}"
+    - gcloud compute instances list --zones=${GCP_REGION_NAME}-a --filter=name=${GCP_INSTANCE_WORKER} --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"
+    - echo "Locust Access URL http://$(gcloud compute instances list --zones=${GCP_REGION_NAME}-a --filter=name=${GCP_INSTANCE_WORKER} --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"):8089 for project ${PROJECT_NAME}" > URL-Access.txt
+    - echo "Locust Access URL http://$(gcloud compute instances list --zones=${GCP_REGION_NAME}-a --filter=name=${GCP_INSTANCE_WORKER} --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP"):8089 for project ${PROJECT_NAME}"
   after_script:
     - rm keyfile.json
   artifacts:
@@ -56,7 +52,7 @@
     when: always
     expire_in: 3 hour
 
-.deploy-locust-develop:
+deploy-locust-develop:
   extends: .deploy-template
   environment:
     name: development

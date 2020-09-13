@@ -32,7 +32,7 @@
   after_script:
     - rm keyfile.json
 
-.predeploy-locust-master-develop:
+predeploy-locust-master-develop:
   extends: .predeploy-template
   environment:
     name: development
@@ -48,7 +48,7 @@
     refs:
       - develop
 
-.predeploy-locust-worker-develop:
+predeploy-locust-worker-develop:
   extends: .predeploy-template
   environment:
     name: development

@@ -29,7 +29,7 @@
   after_script:
     - rm keyfile.json
 
-.undeploy-locust-develop:
+undeploy-locust-develop:
   extends: .undeploy-template
   environment:
     name: development
@@ -42,7 +42,7 @@
     refs:
       - develop
 
-.undeploy-locust-develop-auto:
+undeploy-locust-develop-auto:
   extends: .undeploy-template
   environment:
     name: development
