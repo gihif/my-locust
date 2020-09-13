@@ -1,7 +1,7 @@
 variables:
   #base identity variables
-  PROJECT_NAME: "oriflamejump"
-  PROJECT_ID: "1289"
+  PROJECT_NAME: "migsappsample"
+  PROJECT_ID: "19235528"
   #versioning variable
   MAJOR_VER: "0"
   MINOR_VER: "0"
@@ -14,4 +14,4 @@ stages:
 
 include:
   - local: '/.gitlab-ci-build.yml'
-#  - local: '/.gitlab-ci-deploy.yml'
+  - local: '/.gitlab-ci-predeploy.yml'
