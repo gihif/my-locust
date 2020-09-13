@@ -6,6 +6,8 @@ variables:
   MAJOR_VER: "0"
   MINOR_VER: "0"
   VERSION_TAG: "${MAJOR_VER}.${MINOR_VER}"
+  #locust variable
+  LOCUST_MASTER_IP: "10.184.1.1"
 
 stages:
   - build

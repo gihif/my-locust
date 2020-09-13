@@ -43,7 +43,7 @@ predeploy-locust-master-develop:
     GCP_DISK_SIZE: "10GB"
     GCP_LABEL_TYPE: "master"
     GCP_NETWORK_TAGS: "http-server,all-personal,locust-web"
-    GCP_DOCKER_ARGS: "--container-arg='-f' --container-arg='/mnt/locust/locustfile.py' --container-arg='--master'"
+    GCP_DOCKER_ARGS: "--container-arg=-f --container-arg=/mnt/locust/locustfile.py --container-arg=--master"
   only:
     refs:
       - develop
@@ -59,7 +59,7 @@ predeploy-locust-worker-develop:
     GCP_DISK_SIZE: "10GB"
     GCP_LABEL_TYPE: "worker"
     GCP_NETWORK_TAGS: "http-server,all-personal"
-    GCP_DOCKER_ARGS: "--container-arg='-f' --container-arg='/mnt/locust/locustfile.py' --container-arg='--worker' --container-arg='--master-host=10.184.1.1'"
+    GCP_DOCKER_ARGS: "--container-arg=-f --container-arg=/mnt/locust/locustfile.py --container-arg=--worker --container-arg=--master-host=${LOCUST_MASTER_IP}"
   only:
     refs:
       - develop
@@ -75,7 +75,7 @@ predeploy-locust-master-release:
     GCP_DISK_SIZE: "10GB"
     GCP_LABEL_TYPE: "master"
     GCP_NETWORK_TAGS: "http-server,all-personal,locust-web"
-    GCP_DOCKER_ARGS: "--container-arg='-f' --container-arg='/mnt/locust/locustfile.py' --container-arg='--master'"
+    GCP_DOCKER_ARGS: "--container-arg=-f --container-arg=/mnt/locust/locustfile.py --container-arg=--master"
   only:
     refs:
       - master
@@ -91,7 +91,7 @@ predeploy-locust-worker-release:
     GCP_DISK_SIZE: "10GB"
     GCP_LABEL_TYPE: "worker"
     GCP_NETWORK_TAGS: "http-server,all-personal"
-    GCP_DOCKER_ARGS: "--container-arg='-f' --container-arg='/mnt/locust/locustfile.py' --container-arg='--worker' --container-arg='--master-host=10.184.1.1'"
+    GCP_DOCKER_ARGS: "--container-arg=-f --container-arg=/mnt/locust/locustfile.py --container-arg=--worker --container-arg=--master-host=${LOCUST_MASTER_IP}"
   only:
     refs:
       - master
