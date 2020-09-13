@@ -1,6 +1,6 @@
 variables:
   #base identity variables
-  PROJECT_NAME: "migsappsample-post"
+  PROJECT_NAME: "migsappsample-get"
   PROJECT_ID: "19235528"
   #locust variable
   LOCUST_MASTER_IP: "10.184.1.1"
