@@ -40,7 +40,7 @@
       --scale-based-on-cpu \
       --target-cpu-utilization=${GCP_WORKER_CPU_UTIL} \
       --region=${GCP_REGION_NAME}
-    - LOCUST_EXTERNAL_IP=$(gcloud compute instances list --zones=asia-southeast2-a --filter="name=(locust-prod-master)" --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP")=$(gcloud compute instances list --zones=asia-southeast2-a --filter="name=(locust-prod-master)" --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP")
+    - LOCUST_EXTERNAL_IP=$(gcloud compute instances list --zones=asia-southeast2-a --filter="name=(locust-prod-master)" --format="table(EXTERNAL_IP)" | grep -v "EXTERNAL_IP")
     - echo "Locust Access URL http://${LOCUST_EXTERNAL_IP}:8089 for project ${PROJECT_NAME}" > URL-Access.txt
     - echo "Locust Access URL http://${LOCUST_EXTERNAL_IP}:8089 for project ${PROJECT_NAME}"
   after_script:
