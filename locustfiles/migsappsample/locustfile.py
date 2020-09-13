@@ -11,11 +11,10 @@ class QuickstartUser(HttpUser):
 
     @task
     def upload_page(self):
-        newHeaders = {'Content-Type': 'application/x-www-form-urlencoded'}
         payload = {"image[title]": "Api Upload", "image[user_id]": "2"}
         files = {"image[picture]": open("/mnt/locust/devops.png","rb")}
         
-        response = self.client.post("/images.json", headers = newHeaders, data = payload, files = files)
+        response = self.client.post("/images.json", data = payload, files = files)
         if response.status_code == 400:
             logging.info("failed : " + str(response.status_code))
             logging.info(response.json())
