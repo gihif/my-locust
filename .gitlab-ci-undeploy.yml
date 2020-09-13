@@ -29,7 +29,7 @@
   after_script:
     - rm keyfile.json
 
-undeploy-locust-develop:
+.undeploy-locust-develop:
   extends: .undeploy-template
   environment:
     name: development
@@ -42,12 +42,12 @@ undeploy-locust-develop:
     refs:
       - develop
 
-undeploy-locust-develop-auto:
+.undeploy-locust-develop-auto:
   extends: .undeploy-template
   environment:
     name: development
   when: delayed
-  start_in: 60 minutes
+  start_in: 30 minutes
   needs: ["deploy-locust-develop"]
   variables:
     GCP_INSTANCE_MASTER: "locust-dev-master-id${PROJECT_ID}"
@@ -74,7 +74,7 @@ undeploy-locust-release-auto:
   environment:
     name: release
   when: delayed
-  start_in: 60 minutes
+  start_in: 30 minutes
   needs: ["deploy-locust-release"]
   variables:
     GCP_INSTANCE_MASTER: "locust-prod-master-id${PROJECT_ID}"

@@ -41,7 +41,7 @@
   after_script:
     - rm keyfile.json
 
-build-locust-develop:
+.build-locust-develop:
   extends: .build-template
   environment:
     name: development

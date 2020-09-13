@@ -4,11 +4,6 @@ from locust import HttpUser, task, between
 
 class QuickstartUser(HttpUser):
     wait_time = between(1, 2)
-    
-    @task
-    def images_page(self):
-        self.client.get("/images.json")
-
     @task
     def upload_page(self):
         payload = {"image[title]": "Api Upload", "image[user_id]": "2"}
